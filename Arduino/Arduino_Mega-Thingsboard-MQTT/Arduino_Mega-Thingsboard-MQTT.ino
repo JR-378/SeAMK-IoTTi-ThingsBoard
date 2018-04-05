@@ -32,7 +32,7 @@ byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED }; // MAC address to conne
 //IPAddress ip(192, 168, 1, 38); // IP adress to connect as. Note: IP is not required, as you can get it from DHCP server.
                                  // However, if you want to use static IP, feel free to do so.
 
-// ****************************** TAMK VM Log in details ******************************
+// ****************************** ThingsBoard login details ******************************
 const char* server = "demo.thingsboard.io";
 float port = 1883;
  
@@ -41,7 +41,7 @@ const char* username = "XXXXXXXXXXXXXXXXXX";  // Authentication token here
 
 const char* topicToPublish_DATA = "v1/devices/me/telemetry"; // Topic address to publish to for sending data. 
 const char* topicToPublish_ATTRIBUTES = "v1/devices/me/attributes"; // Topic address to publish to for sending attributes. 
-// *************************************************************************************
+// ****************************************************************************************
 
 #define ONE_WIRE_BUS_1 40          // Data wire is plugged into port 2 on the Arduino
 OneWire oneWire_1(ONE_WIRE_BUS_1); // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
