@@ -33,11 +33,11 @@ byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED }; // MAC address to conne
                                  // However, if you want to use static IP, feel free to do so.
 
 // ****************************** ThingsBoard login details ******************************
-const char* server = "demo.thingsboard.io";
-float port = 1883;
+const char* server = "demo.thingsboard.io";    // MQTT Broker (i.e. server)
+const int port = 1883;                         // Default MQTT port
  
-const char* client_id = "TAMK Sensor Board";          // Can be anything
-const char* username = "XXXXXXXXXXXXXXXXXX";  // Authentication token here
+const char* client_id = "TAMK Sensor Board";   // Can be anything
+const char* username = "XXXXXXXXXXXXXXXXXX";   // Authentication token here
 
 const char* topicToPublish_DATA = "v1/devices/me/telemetry"; // Topic address to publish to for sending data. 
 const char* topicToPublish_ATTRIBUTES = "v1/devices/me/attributes"; // Topic address to publish to for sending attributes. 
@@ -71,9 +71,9 @@ void setup()
   #endif
   sensors_1.begin();   // Start Dallas temperature sensor
   lcd.begin(20, 4);    // Set up the LCD's number of columns: 20 and rows: 4
-  Ethernet.begin(mac); // Start the Internet connection with only mac and thus get IP from DHCP. Note: With IP -> Ethernet.begin(mac, ip);
+  Ethernet.begin(mac); // Start the internet connection with only mac and thus get IP from DHCP. Note: With IP -> Ethernet.begin(mac, ip);
   delay(1500);         // Allow the hardware to sort itself out
-  mqttClient.setServer(server, port); // Configure the server address and port.
+  mqttClient.setServer(server, port); // Configure the server adress and port.
 }
 
 void loop()
