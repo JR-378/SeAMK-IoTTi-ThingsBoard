@@ -8,6 +8,9 @@ At a later date, I will upload my other set of code, where I will be using socke
 ## Quick instructions - Live Demo
 
 1. Add your live demo device authentication token to username variable under ThingsBoard login details in Arduino_Mega-Thingsboard-MQTT.ino
+```C
+const char* username = "XXXXXXXXXXXXXXXXXX";   // Authentication token here
+```
 2. Upload the Arduino_Mega-Thingsboard-MQTT.ino to your board
 3. Check that the data is sent to the live demo, at your device's LATEST TELEMETRY tab at http://demo.thingsboard.io
 
