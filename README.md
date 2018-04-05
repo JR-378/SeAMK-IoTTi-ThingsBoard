@@ -3,7 +3,7 @@
 ## Introduction
 This project uses TAMK's Sensor Board, which consists of Arduino Mega 2560, Arduino Ethernet Shield V1, Dallas temperature sensor and an LCD screen. The data is sent through MQTT connection to ThingsBoard's live demo server.
 
-At a later date, I will upload my other set of code, where I will be using sockets to send the data to an Ubuntu virtual machine, where a Thingsboard service is running on localhost. It is programmed with Python. On the other hand, its documentation is going to take some time!
+At a later date, I will upload my other set of code, where I will be using sockets to send the data to an Ubuntu virtual machine, where a Thingsboard service is running on localhost. It is programmed with Python. And due to its complexity, its documentation is going to take even longer!
 
 ## Quick instructions - Live Demo
 
