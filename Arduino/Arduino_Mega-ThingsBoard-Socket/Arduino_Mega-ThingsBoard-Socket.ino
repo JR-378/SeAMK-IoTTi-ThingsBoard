@@ -27,7 +27,7 @@ byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED }; // MAC address to conne
                                  // However, if you want to use static IP, feel free to do so.
 
 // ******************************* Socket login details ********************************
-const char* server = "192.84.177.52"; // The socket IP of your computer
+const char* server = "XXX.XX.XXX.XX"; // The socket IP of your computer
 float port = 30010; // Port that you use for the socket
 // *************************************************************************************
 
