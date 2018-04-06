@@ -1,9 +1,5 @@
 // This code is used by Arduino Mega that is connected to Arduino Ethernet Shield V1,
-// Dallas temperature sensor and LCD screen. The data is send to ThingsBoard through
-// MQTT connection. 
-
-// Note: Due to security reasons, username (i.e authentication token) is replaced with
-// XXXXXXXXXXXXXXXXXX.
+// Dallas temperature sensor and LCD screen. The data is send to a socket.
 
 #define DEBUG // Enable debug mode, comment it out to disable it.
 
@@ -22,26 +18,18 @@
 #include <DallasTemperature.h>  // Dallas temperature sensor
 #include <ArduinoJson.h>        // For making JSON documents
 #include <Ethernet.h>           // For establishing Internet connection
-#include <PubSubClient.h>       // For establishing MQTT connection
 
 EthernetClient ethernetClient;
-PubSubClient mqttClient(ethernetClient);
 
 // Update these with values suitable for your network.
 byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED }; // MAC address to connect as
 //IPAddress ip(192, 168, 1, 38); // IP adress to connect as. Note: IP is not required, as you can get it from DHCP server.
                                  // However, if you want to use static IP, feel free to do so.
 
-// ****************************** ThingsBoard login details ******************************
-const char* server = "demo.thingsboard.io";    // MQTT Broker (i.e. server)
-const int port = 1883;                         // Default MQTT port
- 
-const char* client_id = "TAMK Sensor Board";   // Can be anything
-const char* username = "XXXXXXXXXXXXXXXXXX";   // Authentication token here
-
-const char* topicToPublish_DATA = "v1/devices/me/telemetry"; // Topic address to publish to for sending data. 
-const char* topicToPublish_ATTRIBUTES = "v1/devices/me/attributes"; // Topic address to publish to for sending attributes. 
-// ****************************************************************************************
+// ******************************* Socket login details ********************************
+const char* server = "192.84.177.52"; // The socket IP of your computer
+float port = 30010; // Port that you use for the socket
+// *************************************************************************************
 
 #define ONE_WIRE_BUS_1 40          // Data wire is plugged into port 2 on the Arduino
 OneWire oneWire_1(ONE_WIRE_BUS_1); // Setup a oneWire instance to communicate with any OneWire devices (not just Maxim/Dallas temperature ICs)
@@ -57,10 +45,6 @@ float voltageV1,     // Used to store voltage V1
       temperature1;  // Used to store temperature
 char JSON_Data[100]; // Used to store the generated data in JSON
 
-// Variables for counting time.
-unsigned long previousMillis = 0; // Last time updated
-long interval = 60000;            // Interval at which to publish data (60 sec)
-
 void setup()
 {
   #ifdef DEBUG
@@ -73,39 +57,41 @@ void setup()
   lcd.begin(20, 4);    // Set up the LCD's number of columns: 20 and rows: 4
   Ethernet.begin(mac); // Start the internet connection with only mac and thus get IP from DHCP. Note: With IP -> Ethernet.begin(mac, ip);
   delay(1500);         // Allow the hardware to sort itself out
-  mqttClient.setServer(server, port); // Configure the server adress and port.
+  ethernetClient.connect(server, port); // Configure the server adress and port.
 }
 
 void loop()
 {
-  unsigned long currentMillis = millis(); // Store the time since the board started
-  
-  // If not connected to MQTT, we will reconnect.
-  if (!mqttClient.connected()) { 
-    reconnect();
-  }
-
-  // When the time set to interval has passed, it will execute a command (publishing data to ThingsBoard)
-  if(currentMillis - previousMillis > interval) {
-    previousMillis = currentMillis; // reset the previous millis, so that it will continue to publish data.
-    workflow(); // Workflow to use data
+  // Connect and send data to socket.
+  if (!ethernetClient.connected()) { 
+    connect_to_socket();
   }
   
-  mqttClient.loop(); // Called to maintain connection to server
+  ethernetClient.stop(); // Stops the connection
+  delay(5000);           // Wait five seconds
 }
 
-// Connect and reconnect MQTT
-void reconnect() {
+// Connect and send data
+void connect_to_socket() {
   // Loop until we're reconnected
-  while (!mqttClient.connected()) {
-    DEBUG_PRINT("Attempting MQTT connection...");
+  while (!ethernetClient.connected()) {
+    DEBUG_PRINT("Attempting connection...");
     // Attempt to connect
-    if (mqttClient.connect(client_id, username, NULL)) { // password null, because authentication token is put into username
+    int i = ethernetClient.connect(server, 30010);
+    if (i == 1) {
       DEBUG_PRINTLN("Connected!");
-      workflow(); // publish data, once connected
+      workflow(); // Workflow to measure, print and send data.
     } else {
-      DEBUG_PRINT("Failed, result code=");// If you get a result code, refer to their docs at https://pubsubclient.knolleary.net/api.html#state
-      DEBUG_PRINT(mqttClient.state());    // Prints the current result code for easier troubleshooting
+      DEBUG_PRINT("Connection failed, code: ");
+      DEBUG_PRINT(i);
+      /* Code meanings:
+       * SUCCESS 1
+       * FAILED 0
+       * TIMED_OUT -1
+       * INVALID_SERVER -2
+       * TRUNCATED -3
+       * INVALID_RESPONSE -4
+       */
       DEBUG_PRINTLN(" try again in 5 seconds");
       delay(5000);  // Wait 5 seconds before retrying
     }
@@ -146,20 +132,20 @@ void measure(void)
   temperature1=sensors_1.getTempCByIndex(0); // Save the temperature value on global variable
 }
 
-// Send data with MQTT to IBM Cloud IoT platform
+// Send data to socket
 void send_data(void)
 {
-  create_JSON_Data(); // Set up the data to be published
-  mqttClient.publish(topicToPublish_DATA, JSON_Data); // Publish JSON data to ThingsBoard
+  createJSON(); // Set up the data to be published
+  ethernetClient.print(JSON_Data); // Publish JSON data to IBM IoT
 }
 
 // A human and Arduino friendly way to create JSON documents in Arduino
-void create_JSON_Data(void)
+void createJSON(void)
 {
   StaticJsonBuffer<200> JSON_Buffer; // Allocate JSON buffer with 200-byte pool
   JsonObject& JSON_Object = JSON_Buffer.createObject(); // Create JSON object (i.e. document)
   
-  // Now populate the JSON document with data
+  // Now populate the JSON document with data. Note: Only send data in this format. ThingsBoard doesn't like arrays or nested objects
   JSON_Object["Temperature"] = temperature1; // Create JSON object named "Temperature", assigned with our temperature data
   JSON_Object["Voltage1"] = voltageV1;       // Create JSON object named "Voltage1", assigned with our voltage data
   JSON_Object["Voltage2"] = voltageV2;       // Create JSON object named "Voltage2", assigned with our voltage data
@@ -176,7 +162,7 @@ void create_JSON_Data(void)
 // The order of methods to handle data
 void workflow(void)
 {
-  measure();           // First measure and save the data
-  print_measurement(); // Print them on the LCD screen
-  send_data();         // Publish data to ThingsBoard
+  measure();           // First measure and save the data,
+  print_measurement(); // print them on the LCD screen.
+  send_data();         // Send data to a socket.
 }
