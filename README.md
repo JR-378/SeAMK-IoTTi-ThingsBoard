@@ -38,7 +38,7 @@ thingsboardHost = "127.0.0.1"   # Address where your ThingsBoard is hosted (127.
 clientID = "TAMK Sensor Board"  # Client ID, can be anything.
 username = "XXXXXXXXXXXXXXXXX"  # Device's authentication token.
 ```
-3. Upload the file to your Linux server with FTP or SSL (or if you are using GUI, you could use Cloud storage to download the file)
+3. Upload the file to your Linux server with FTP or SSL (or if you are using GUI, you could use cloud storage (e.g. Dropbox, Google Drive, OneDrive, MEGA) to download the file)
 4. Run the program on your Linux Server:
 ```
 python3 SocketServer_ThingsBoard-Host.py
