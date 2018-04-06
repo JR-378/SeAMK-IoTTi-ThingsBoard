@@ -3,7 +3,7 @@ a virtual machine and forwards the data to it. """
 import socket
 import time
 
-SOCKET_HOST = "192.84.177.52" # Use your computer's IP.
+SOCKET_HOST = "XXX.XX.XXX.XX" # Use your computer's IP.
 SOCKET_PORT = 30010           # Use this port or choose another one that is free.
 
 def receive_Data(socket_connection):
