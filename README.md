@@ -9,11 +9,11 @@ A more thorough documentation will be in the Docs folder, once it is ready.
 
 ## Quick instructions - Live Demo
 
-1. Add your live demo device authentication token to username variable under ThingsBoard login details in Arduino_Mega-Thingsboard-MQTT.ino
+1. Add your live demo device authentication token to username variable under ThingsBoard login details in Thingsboard-MQTT.ino
 ```C
 const char* username = "XXXXXXXXXXXXXXXXXX";   // Authentication token here
 ```
-2. Upload the Arduino_Mega-Thingsboard-MQTT.ino to your board
+2. Upload the Thingsboard-MQTT.ino to your board
 3. Check that the data is sent to the live demo, at your device's LATEST TELEMETRY tab at http://demo.thingsboard.io
 
 ## Quick instructions - Sockets
@@ -60,7 +60,7 @@ SOCKET_LINUX_PORT = 30020            # Socket port - use the port in your code t
 python3 SocketServer_VirtualPC-Host.py
 ```
 
-### Arduino_Mega-ThingsBoard-Socket.ino
+### ThingsBoard-Socket.ino
 1. Edit socket login details
 ```C
 // ******************************* Socket login details ********************************
