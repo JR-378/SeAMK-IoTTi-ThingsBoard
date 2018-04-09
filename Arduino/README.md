@@ -29,9 +29,15 @@ float port = 30010; // Port that you use for the socket
 
 Remove methods:
 
-```C
+```C++
 void print_measurement(void)
+{
+  // Code
+}
 void measure(void)
+{
+  // Code
+}
 ```
 
 Remember to remove the methods from `void workflow(void)` as well, and create a JSON document with hard-coded data.
