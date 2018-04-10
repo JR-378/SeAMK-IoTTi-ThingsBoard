@@ -5,7 +5,7 @@ This project uses TAMK's Sensor Board, which consists of Arduino Mega 2560, Ardu
 
 There is also a socket version, that can be used to send live data to ThingsBoard service, that is running on a virtual installation of Ubuntu server.
 
-A more thorough documentation will be in the Docs folder, once it is ready.
+A more thorough set of instructions and information will be in the Documentation folder, once it is ready.
 
 ## Quick instructions - Live Demo
 
