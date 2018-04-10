@@ -22,6 +22,8 @@ Note that with the same setup, this code can be universally used to upload to an
 
 If you are not satisfied with only knowing that the ThingsBoard service is up and running in your virtual server, this can be used to test it out. Another alternative is to use a Bridged connection.
 
+There is also a more complicated version under Python -> Two sockets (deprecated)
+
 ### SocketServer_ReceiveSend.py
 
 1. Edit the SocketServer_ReceiveSend socket details to match the network details of your computer that is running the virtual machine.
@@ -29,7 +31,7 @@ If you are not satisfied with only knowing that the ThingsBoard service is up an
 SOCKET_HOST = "XXX.XX.XXX.XX" # Use your computer's IP (one hosting the Virtual Machine)
 SOCKET_PORT = 30010           # Use this port or choose another one that is free.
 ```
-2. Then change ThingsBoard host name to match the IP where it is hosted. Also change the username to match your access token.
+2. Then change ThingsBoard host name to match the IP where it is hosted (use Host-only Adapter in Oracle VM VirtualBox). Also change the username to match your access token.
 ```Python
 # MQTT - ThingsBoard
 thingsboardHost = "XXX.XXX.XX.XXX"  # Address where your ThingsBoard is hosted (127.0.0.1 => default(i.e. localhost))
