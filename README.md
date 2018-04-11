@@ -36,8 +36,8 @@ SOCKET_PORT = 30010           # Use this port or choose another one that is free
 # MQTT - ThingsBoard
 thingsboardHost = "XXX.XXX.XX.XXX"  # Address where your ThingsBoard is hosted (127.0.0.1 => default(i.e. localhost))
                                     # To change host IP: sudo nano /etc/thingsboard/conf/thingsboard.yml
-                                    # Change IP to your computer's IP. Remember to change the IP of MQTT Broker and use 
-                                    # sudo reboot to save everything once you are finished.
+                                    # Change IP to your computer's IP. Remember to change the IP of MQTT Broker 
+                                    # and use sudo reboot to save everything once you are finished.
 clientID = "TAMK Sensor Board"      # Client ID, can be anything.
 username = "XXXXXXXXXXXXXXXXXXXX"   # Device's authentication token.
 ```
