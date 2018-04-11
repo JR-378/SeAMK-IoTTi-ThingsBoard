@@ -59,6 +59,6 @@ float port = 30010; // Port that you use for the socket
 
 ### Check the data
 
-1. Use your favorite browser and navigate to Things.Board.IP.address:ThingsBoardPort (e.g. 192.55.55.55:8080)
+1. Use your favorite browser and navigate to your Things.Board.IP.address:ThingsBoardPort (e.g. 192.55.55.55:8080)
 2. Login to ThingsBoard
 3. Check the device's LATEST TELEMETRY tab.
